@@ -36,7 +36,7 @@ fn setup() -> TestSetup {
     let collateral_admin_client = StellarAssetClient::new(&env, &collateral_contract_id);
     let collateral_client = TokenClient::new(&env, &collateral_contract_id);
 
-    let contract_id = env.register(SyntheticXau, ());
+    let contract_id = env.register_contract(None, SyntheticXau);
     let client = SyntheticXauClient::new(&env, &contract_id);
 
     client.initialize(
@@ -69,7 +69,7 @@ fn initialize_rejects_invalid_threshold_ordering() {
         .register_stellar_asset_contract_v2(collateral_admin)
         .address();
 
-    let contract_id = env.register(SyntheticXau, ());
+    let contract_id = env.register_contract(None, SyntheticXau);
     let client = SyntheticXauClient::new(&env, &contract_id);
 
     // liquidation threshold >= min ratio should be rejected.

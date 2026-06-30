@@ -2,7 +2,7 @@
 
 > An open-source, fully on-chain synthetic gold (XAU) exposure protocol on Stellar Soroban — with a live price-reconciliation dashboard built from real forex/gold market trading practice.
 
-[![CI](https://github.com/aurum-protocol/aurum/actions/workflows/ci.yml/badge.svg)](https://github.com/aurum-protocol/aurum/actions/workflows/ci.yml)
+[![CI](https://github.com/aurum-protocoll/aurum/actions/workflows/ci.yml/badge.svg)](https://github.com/aurum-protocoll/aurum/actions/workflows/ci.yml)
 [![License: Apache-2.0](https://img.shields.io/badge/License-Apache%202.0-blue.svg)](LICENSE)
 [![Network: Soroban Testnet](https://img.shields.io/badge/network-testnet-orange)](https://developers.stellar.org/docs/networks)
 
@@ -76,11 +76,19 @@ This is an open-source educational/research protocol exploring synthetic asset d
 cd contract
 cargo build --target wasm32-unknown-unknown --release
 cargo test
+cargo clippy --target wasm32-unknown-unknown -- -D warnings
+
+# Build a deployable WASM (uses the wasm32v1-none target):
+stellar contract build
+
+# Deploy to testnet
 stellar contract deploy \
-  --wasm target/wasm32-unknown-unknown/release/aurum_synthetic_xau.wasm \
+  --wasm target/wasm32v1-none/release/aurum_synthetic_xau.wasm \
   --source-account <YOUR_TESTNET_ACCOUNT> \
   --network testnet
 ```
+
+**Latest testnet deployment:** `CDDOQRCE5LNJQBELCCRWSQGZR6U2WM6SZDUAUABSURIKUVEEOKP7QW6F`
 
 ### Backend
 ```bash

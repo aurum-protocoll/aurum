@@ -21,37 +21,17 @@ This contract has not been professionally audited. See [`docs/risks.md`](../docs
 | `src/pricing.rs` | Pure collateral-ratio math, unit tested independently of the contract env |
 | `src/test.rs` | Integration tests covering mint/burn/liquidate flows against a mock Stellar Asset Contract |
 
-## ⚠️ Build verification status
-
-Written against the public `soroban-sdk` 21.x API. The pure math in
-`pricing.rs` was independently cross-checked against a Python
-reimplementation of the same formula (see PR description / commit
-history), but **the contract as a whole has not yet been compiled in a
-sandboxed environment with network access to crates.io / rustup.**
-
-Before your first commit:
-
-```bash
-rustup target add wasm32-unknown-unknown
-cargo build --target wasm32-unknown-unknown --release
-cargo test
-cargo clippy --target wasm32-unknown-unknown -- -D warnings
-```
-
-The most likely sources of small mismatches are exact `testutils` API
-signatures (`register_stellar_asset_contract_v2`, `StellarAssetClient`,
-`mock_all_auths`) across SDK minor versions — these are correct as of
-the documented 21.x API but should be confirmed against whatever exact
-version you pin in `Cargo.toml`. Delete this warning once verified —
-a reviewer seeing "not yet verified" undercuts confidence in a contract
-that handles collateral.
-
 ## Deploying to testnet
 
 ```bash
-cargo build --target wasm32-unknown-unknown --release
+# Build a deployable WASM (stellar-cli uses the wasm32v1-none target)
+stellar contract build
+
+# Deploy to testnet
 stellar contract deploy \
-  --wasm target/wasm32-unknown-unknown/release/aurum_synthetic_xau.wasm \
+  --wasm target/wasm32v1-none/release/aurum_synthetic_xau.wasm \
   --source-account <YOUR_TESTNET_ACCOUNT> \
   --network testnet
 ```
+
+**Latest testnet deployment:** `CDDOQRCE5LNJQBELCCRWSQGZR6U2WM6SZDUAUABSURIKUVEEOKP7QW6F`
