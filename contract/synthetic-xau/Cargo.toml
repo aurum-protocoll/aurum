@@ -1,0 +1,20 @@
+[package]
+name = "aurum-synthetic-xau"
+version = "0.1.0"
+edition = "2021"
+publish = false
+license = "Apache-2.0"
+description = "Over-collateralized synthetic XAU (gold) exposure contract on Soroban. Not audited — see docs/risks.md."
+
+[lib]
+crate-type = ["cdylib", "rlib"]
+doctest = false
+
+[dependencies]
+soroban-sdk = { workspace = true }
+
+[dev-dependencies]
+soroban-sdk = { workspace = true, features = ["testutils"] }
+
+[features]
+testutils = ["soroban-sdk/testutils"]
