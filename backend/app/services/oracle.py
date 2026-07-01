@@ -53,6 +53,9 @@ def reconcile_with_spot(
     """
     now = now or datetime.now(timezone.utc)
 
+    if on_chain_price_usd <= 0:
+        raise ValueError("on_chain_price_usd must be positive")
+
     if spot_price_usd <= 0:
         raise ValueError("spot_price_usd must be positive")
 
