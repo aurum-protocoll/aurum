@@ -58,8 +58,17 @@ def test_reconciliation_does_not_flag_small_deviation():
     assert report.deviation_exceeds_threshold is False
 
 
+def test_reconciliation_rejects_non_positive_on_chain_price():
+    with pytest.raises(ValueError, match="on_chain_price_usd must be positive"):
+        reconcile_with_spot(
+            on_chain_price_usd=0.0,
+            spot_price_usd=2000.0,
+            deviation_alert_threshold_bps=50,
+        )
+
+
 def test_reconciliation_rejects_non_positive_spot_price():
-    with pytest.raises(ValueError):
+    with pytest.raises(ValueError, match="spot_price_usd must be positive"):
         reconcile_with_spot(
             on_chain_price_usd=2000.0,
             spot_price_usd=0.0,
