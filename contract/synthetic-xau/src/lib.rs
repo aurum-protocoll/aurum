@@ -168,6 +168,16 @@ impl SyntheticXau {
         Ok(())
     }
 
+    /// Returns the last price pushed by the price-pusher (scaled by
+    /// SCALAR), or `AurumError::PriceNotSet` if none has been pushed yet.
+    pub fn get_price(env: Env) -> Result<i128, AurumError> {
+        let config = types::get_config(&env).ok_or(AurumError::NotInitialized)?;
+        if config.xau_usd_price == 0 {
+            return Err(AurumError::PriceNotSet);
+        }
+        Ok(config.xau_usd_price)
+    }
+
     /// Returns the current collateral ratio (in basis points) for a user's
     /// position, or an error if they have no open position.
     pub fn get_position_health(env: Env, user: Address) -> Result<i128, AurumError> {
