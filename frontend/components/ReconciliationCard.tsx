@@ -52,3 +52,36 @@ export function ReconciliationCard({ report }: ReconciliationCardProps) {
     </div>
   );
 }
+
+// Mirrors the layout of ReconciliationCard above so the section doesn't
+// jump in height once results replace the placeholder.
+export function ReconciliationCardSkeleton() {
+  return (
+    <div
+      role="status"
+      aria-label="Loading price reconciliation"
+      className="animate-pulse rounded-lg border border-line bg-surface p-6"
+    >
+      <div className="flex items-center justify-between">
+        <div className="h-3 w-32 rounded bg-line" />
+        <div className="h-3 w-20 rounded bg-line" />
+      </div>
+
+      <div className="mt-4 grid grid-cols-2 gap-4">
+        <div>
+          <div className="h-3 w-28 rounded bg-line" />
+          <div className="mt-2 h-6 w-20 rounded bg-line" />
+        </div>
+        <div>
+          <div className="h-3 w-20 rounded bg-line" />
+          <div className="mt-2 h-6 w-20 rounded bg-line" />
+        </div>
+      </div>
+
+      <div className="mt-4 flex items-center justify-between border-t border-line pt-4">
+        <div className="h-3 w-16 rounded bg-line" />
+        <div className="h-3 w-28 rounded bg-line" />
+      </div>
+    </div>
+  );
+}

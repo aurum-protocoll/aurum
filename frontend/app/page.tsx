@@ -1,7 +1,10 @@
 "use client";
 
 import { useState } from "react";
-import { ReconciliationCard } from "@/components/ReconciliationCard";
+import {
+  ReconciliationCard,
+  ReconciliationCardSkeleton,
+} from "@/components/ReconciliationCard";
 import { PositionCard } from "@/components/PositionCard";
 import { reconcilePrice } from "@/lib/api";
 import type { PositionSummary, ReconciliationReport } from "@/lib/types";
@@ -95,10 +98,16 @@ export default function Home() {
         {error && <p className="font-mono text-sm deviation-alert">{error}</p>}
       </section>
 
-      {report && (
+      {loading ? (
         <section className="mb-10">
-          <ReconciliationCard report={report} />
+          <ReconciliationCardSkeleton />
         </section>
+      ) : (
+        report && (
+          <section className="mb-10">
+            <ReconciliationCard report={report} />
+          </section>
+        )
       )}
 
       <section>
