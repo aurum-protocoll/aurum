@@ -95,6 +95,24 @@ fn push_price_updates_state() {
 }
 
 #[test]
+fn get_price_returns_last_pushed_price() {
+    let setup = setup();
+    setup.client.push_price(&(2_000 * SCALAR));
+    assert_eq!(setup.client.get_price(), 2_000 * SCALAR);
+
+    // Pushing a new price should update what get_price returns.
+    setup.client.push_price(&(2_100 * SCALAR));
+    assert_eq!(setup.client.get_price(), 2_100 * SCALAR);
+}
+
+#[test]
+fn get_price_fails_before_any_price_pushed() {
+    let setup = setup();
+    let result = setup.client.try_get_price();
+    assert_eq!(result, Err(Ok(AurumError::PriceNotSet)));
+}
+
+#[test]
 fn mint_succeeds_at_exactly_minimum_ratio() {
     let setup = setup();
     setup.client.push_price(&(2_000 * SCALAR));
