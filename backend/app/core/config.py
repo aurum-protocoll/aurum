@@ -14,6 +14,13 @@ class Settings(BaseSettings):
     # Oracle sources (see app/services/oracle.py)
     REFLECTOR_CONTRACT_ID: str = ""
     DIA_ORACLE_CONTRACT_ID: str = ""
+    # DIA's Soroban oracle is a generic key/value store (get_value(key:
+    # String) -> OracleValue), not a typed asset enum like Reflector's
+    # SEP-40 interface — the key is whatever string the deployment's
+    # off-chain feeder chooses to publish under. "XAU/USD" matches the
+    # pair-naming convention DIA's own feeders use elsewhere (e.g.
+    # "BTC/USD"), but is configurable in case a given deployment differs.
+    DIA_XAU_USD_KEY: str = "XAU/USD"
 
     # Real spot price reference, for the reconciliation dashboard.
     # v0 uses a placeholder / manually-set value; a real integration
