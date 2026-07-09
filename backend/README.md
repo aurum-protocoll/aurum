@@ -41,7 +41,7 @@ tests/           — pytest suite
 
 ## Known gaps (good first issues!)
 
-- No live Reflector/DIA contract calls yet — `oracle.py`'s aggregation math is fully tested, but the actual fetching of live `PriceQuote`s from on-chain oracle contracts (`app/services/feeds.py`) doesn't exist yet.
+- No live DIA contract calls yet — `app/services/feeds.py` now fetches a live Reflector `PriceQuote` (SEP-40 `lastprice`), but a DIA equivalent is still missing, and neither is wired into the `/pricing/aggregate` route yet.
 - No real spot-price API integration — `SPOT_PRICE_PROVIDER=manual` is a placeholder.
 - `/positions/` is in-memory and client-writable, not a live Soroban RPC read of the deployed `SyntheticXau` contract.
 - No Upstash Redis caching wired up yet despite the dependency being included — see `docs/architecture.md`.
