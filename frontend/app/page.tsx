@@ -6,6 +6,7 @@ import {
   ReconciliationCardSkeleton,
 } from "@/components/ReconciliationCard";
 import { PositionCard } from "@/components/PositionCard";
+import { PositionHistoryChart } from "@/components/PositionHistoryChart";
 import { reconcilePrice } from "@/lib/api";
 import {
   checkFreighterInstalled,
@@ -13,7 +14,11 @@ import {
   getConnectedAddress,
   shortenAddress,
 } from "@/lib/freighter";
-import type { PositionSummary, ReconciliationReport } from "@/lib/types";
+import type {
+  PositionHistoryPoint,
+  PositionSummary,
+  ReconciliationReport,
+} from "@/lib/types";
 
 const DEMO_POSITION: PositionSummary = {
   address: "GDEMO...PLACEHOLDER",
@@ -21,6 +26,16 @@ const DEMO_POSITION: PositionSummary = {
   debt_xau: 1,
   collateral_ratio_bps: 15000,
 };
+
+const DEMO_POSITION_HISTORY: PositionHistoryPoint[] = [
+  { timestamp: "2026-07-01T00:00:00Z", collateral_ratio_bps: 18200 },
+  { timestamp: "2026-07-02T00:00:00Z", collateral_ratio_bps: 17600 },
+  { timestamp: "2026-07-03T00:00:00Z", collateral_ratio_bps: 16950 },
+  { timestamp: "2026-07-04T00:00:00Z", collateral_ratio_bps: 16350 },
+  { timestamp: "2026-07-05T00:00:00Z", collateral_ratio_bps: 15820 },
+  { timestamp: "2026-07-06T00:00:00Z", collateral_ratio_bps: 15410 },
+  { timestamp: "2026-07-07T00:00:00Z", collateral_ratio_bps: 15000 },
+];
 
 const MIN_RATIO_BPS = 15000; // 150%
 const LIQUIDATION_THRESHOLD_BPS = 12000; // 120%
@@ -210,6 +225,14 @@ export default function Home() {
         </h2>
         <PositionCard
           position={DEMO_POSITION}
+          minRatioBps={MIN_RATIO_BPS}
+          liquidationThresholdBps={LIQUIDATION_THRESHOLD_BPS}
+        />
+      </section>
+
+      <section className="mt-10">
+        <PositionHistoryChart
+          points={DEMO_POSITION_HISTORY}
           minRatioBps={MIN_RATIO_BPS}
           liquidationThresholdBps={LIQUIDATION_THRESHOLD_BPS}
         />
