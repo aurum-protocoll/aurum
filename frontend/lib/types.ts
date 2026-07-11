@@ -33,3 +33,8 @@ export interface PositionSummary {
   debt_xau: number;
   collateral_ratio_bps: number | null;
 }
+
+export interface PositionHistoryPoint {
+  timestamp: string;
+  collateral_ratio_bps: number | null;
+}
