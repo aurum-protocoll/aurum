@@ -41,7 +41,7 @@ tests/           — pytest suite
 
 ## Known gaps (good first issues!)
 
-- No live DIA contract calls yet — `app/services/feeds.py` now fetches a live Reflector `PriceQuote` (SEP-40 `lastprice`), but a DIA equivalent is still missing, and neither is wired into the `/pricing/aggregate` route yet.
+- `app/services/feeds.py` now fetches live `PriceQuote`s from both Reflector (SEP-40 `lastprice`) and DIA (`get_value`), but neither is wired into the `/pricing/aggregate` route yet — it still runs on manually-supplied quotes.
 - No real spot-price API integration — `SPOT_PRICE_PROVIDER=manual` is a placeholder.
 - `/positions/` is in-memory and client-writable, not a live Soroban RPC read of the deployed `SyntheticXau` contract.
 - No Upstash Redis caching wired up yet despite the dependency being included — see `docs/architecture.md`.

@@ -38,12 +38,13 @@ ReconciliationReport → ReconciliationCard renders it
 
 ## What's NOT wired up yet (by design, tracked as issues)
 
-- **Live oracle contract calls: Reflector done, DIA outstanding.**
+- **Live oracle contract calls: both done, route wiring outstanding.**
   `oracle.aggregate_median()` takes a list of `PriceQuote` objects.
-  `app/services/feeds.py` now calls the real Reflector Soroban
-  contract (SEP-40 `lastprice`) to produce one; a DIA equivalent is
-  still needed before `/pricing/aggregate` can run on live
-  multi-source data end-to-end.
+  `app/services/feeds.py` now calls both the real Reflector Soroban
+  contract (SEP-40 `lastprice`) and the real DIA Soroban oracle
+  (`get_value`) to produce them; neither is wired into
+  `/pricing/aggregate` yet, so the route still runs on
+  manually-supplied quotes.
 - **No real spot-price API.** `SPOT_PRICE_PROVIDER=manual` in config is
   a placeholder.
 - **No live contract reads.** `/positions/` is a client-writable
