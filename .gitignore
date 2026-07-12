@@ -10,7 +10,10 @@ __pycache__/
 .venv/
 venv/
 .env
+.env.local
 backend/.env
+backend/.env.local
+backend/.env*.local
 
 # Node / Next.js
 node_modules/
