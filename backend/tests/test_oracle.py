@@ -7,7 +7,9 @@ from app.services.oracle import aggregate_median, reconcile_with_spot
 
 
 def _quote(source: PriceSource, price: float) -> PriceQuote:
-    return PriceQuote(source=source, price_usd=price, as_of=datetime.now(timezone.utc).isoformat())
+    return PriceQuote(
+        source=source, price_usd=price, as_of=datetime.now(timezone.utc).isoformat()
+    )
 
 
 def test_median_aggregation_with_two_sources():

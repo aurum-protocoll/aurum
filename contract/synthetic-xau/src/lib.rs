@@ -53,7 +53,7 @@ impl SyntheticXau {
         admin: Address,
         collateral_token: Address,
         price_pusher: Address,
-        min_collateral_ratio_bps: u32, // e.g. 15000 = 150%
+        min_collateral_ratio_bps: u32,  // e.g. 15000 = 150%
         liquidation_threshold_bps: u32, // e.g. 12000 = 120%
     ) -> Result<(), AurumError> {
         admin.require_auth();
@@ -118,12 +118,8 @@ impl SyntheticXau {
         let new_collateral = position.collateral + collateral_amount;
         let new_debt = position.debt_xau + mint_amount;
 
-        let ratio_bps = pricing::collateral_ratio_bps(
-            new_collateral,
-            new_debt,
-            config.xau_usd_price,
-            SCALAR,
-        )?;
+        let ratio_bps =
+            pricing::collateral_ratio_bps(new_collateral, new_debt, config.xau_usd_price, SCALAR)?;
         if ratio_bps < config.min_collateral_ratio_bps as i128 {
             return Err(AurumError::InsufficientCollateral);
         }
@@ -159,11 +155,7 @@ impl SyntheticXau {
         types::set_position(&env, &user, &position);
 
         let collateral_client = token::Client::new(&env, &config.collateral_token);
-        collateral_client.transfer(
-            &env.current_contract_address(),
-            &user,
-            &collateral_release,
-        );
+        collateral_client.transfer(&env.current_contract_address(), &user, &collateral_release);
 
         Ok(())
     }
@@ -202,7 +194,11 @@ impl SyntheticXau {
     /// position's *entire* remaining collateral rather than a partial
     /// liquidation. A partial-liquidation design (closer to what
     /// production lending protocols use) is tracked as an open issue.
-    pub fn liquidate(env: Env, liquidator: Address, target_user: Address) -> Result<(), AurumError> {
+    pub fn liquidate(
+        env: Env,
+        liquidator: Address,
+        target_user: Address,
+    ) -> Result<(), AurumError> {
         liquidator.require_auth();
 
         let config = types::get_config(&env).ok_or(AurumError::NotInitialized)?;

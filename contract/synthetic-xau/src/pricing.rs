@@ -80,8 +80,10 @@ mod test {
         let collateral = 3_000 * SCALAR;
 
         // Price drops from $2000 to $1500 -> ratio improves (less debt value).
-        let ratio_at_2000 = collateral_ratio_bps(collateral, debt_xau, 2_000 * SCALAR, SCALAR).unwrap();
-        let ratio_at_1500 = collateral_ratio_bps(collateral, debt_xau, 1_500 * SCALAR, SCALAR).unwrap();
+        let ratio_at_2000 =
+            collateral_ratio_bps(collateral, debt_xau, 2_000 * SCALAR, SCALAR).unwrap();
+        let ratio_at_1500 =
+            collateral_ratio_bps(collateral, debt_xau, 1_500 * SCALAR, SCALAR).unwrap();
 
         assert!(ratio_at_1500 > ratio_at_2000);
     }

@@ -22,7 +22,9 @@ _POSITIONS: dict[str, PositionSummary] = {}
 async def get_position(address: str) -> PositionSummary:
     position = _POSITIONS.get(address)
     if position is None:
-        raise HTTPException(status_code=404, detail="No position found for this address")
+        raise HTTPException(
+            status_code=404, detail="No position found for this address"
+        )
     return position
 
 

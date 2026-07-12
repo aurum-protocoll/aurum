@@ -85,9 +85,7 @@ fn push_price_updates_state() {
     // good-first-issue: add `get_price`), so we confirm indirectly via
     // a mint that depends on it succeeding.
     let user = Address::generate(&setup.env);
-    setup
-        .collateral_admin_client
-        .mint(&user, &(3_000 * SCALAR));
+    setup.collateral_admin_client.mint(&user, &(3_000 * SCALAR));
 
     setup.client.mint(&user, &(3_000 * SCALAR), &(1 * SCALAR));
     let health = setup.client.get_position_health(&user);
@@ -118,9 +116,7 @@ fn mint_succeeds_at_exactly_minimum_ratio() {
     setup.client.push_price(&(2_000 * SCALAR));
 
     let user = Address::generate(&setup.env);
-    setup
-        .collateral_admin_client
-        .mint(&user, &(3_000 * SCALAR));
+    setup.collateral_admin_client.mint(&user, &(3_000 * SCALAR));
 
     setup.client.mint(&user, &(3_000 * SCALAR), &(1 * SCALAR));
 
@@ -137,9 +133,7 @@ fn mint_rejected_when_undercollateralized() {
     setup.client.push_price(&(2_000 * SCALAR));
 
     let user = Address::generate(&setup.env);
-    setup
-        .collateral_admin_client
-        .mint(&user, &(2_000 * SCALAR));
+    setup.collateral_admin_client.mint(&user, &(2_000 * SCALAR));
 
     // Only $2000 collateral for 1 XAU ($2000 debt) = 100% ratio, below
     // the 150% minimum.
@@ -155,9 +149,7 @@ fn burn_releases_proportional_collateral() {
     setup.client.push_price(&(2_000 * SCALAR));
 
     let user = Address::generate(&setup.env);
-    setup
-        .collateral_admin_client
-        .mint(&user, &(3_000 * SCALAR));
+    setup.collateral_admin_client.mint(&user, &(3_000 * SCALAR));
     setup.client.mint(&user, &(3_000 * SCALAR), &(1 * SCALAR));
 
     // Burn half the debt -> should release half the collateral.
@@ -172,9 +164,7 @@ fn liquidate_fails_on_healthy_position() {
     setup.client.push_price(&(2_000 * SCALAR));
 
     let user = Address::generate(&setup.env);
-    setup
-        .collateral_admin_client
-        .mint(&user, &(3_000 * SCALAR));
+    setup.collateral_admin_client.mint(&user, &(3_000 * SCALAR));
     setup.client.mint(&user, &(3_000 * SCALAR), &(1 * SCALAR));
 
     let liquidator = Address::generate(&setup.env);
@@ -188,9 +178,7 @@ fn liquidate_succeeds_once_price_drop_breaches_threshold() {
     setup.client.push_price(&(2_000 * SCALAR));
 
     let user = Address::generate(&setup.env);
-    setup
-        .collateral_admin_client
-        .mint(&user, &(3_000 * SCALAR));
+    setup.collateral_admin_client.mint(&user, &(3_000 * SCALAR));
     setup.client.mint(&user, &(3_000 * SCALAR), &(1 * SCALAR));
 
     // Gold price spikes from $2000 to $2600 -> debt value rises to
