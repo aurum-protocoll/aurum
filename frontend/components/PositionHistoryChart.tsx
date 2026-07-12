@@ -34,8 +34,8 @@ export function PositionHistoryChart({
 
   if (validPoints.length < 2) {
     return (
-      <div className="rounded-lg border border-line bg-surface p-6">
-        <p className="font-mono text-xs uppercase tracking-wide text-muted">
+      <div className="rounded-xl border border-line bg-surface p-6">
+        <p className="font-display text-xs font-medium uppercase tracking-[0.2em] text-muted">
           Position history
         </p>
         <p className="mt-3 text-sm text-muted">
@@ -74,9 +74,9 @@ export function PositionHistoryChart({
   const liquidationLineY = yForRatio(liquidationThresholdBps);
 
   return (
-    <div className="rounded-lg border border-line bg-surface p-6">
+    <div className="rounded-xl border border-line bg-surface p-6">
       <div className="mb-4 flex items-center justify-between">
-        <p className="font-mono text-xs uppercase tracking-wide text-muted">
+        <p className="font-display text-xs font-medium uppercase tracking-[0.2em] text-muted">
           Position history
         </p>
         <p className="font-mono text-xs text-muted">Collateral ratio over time</p>
@@ -94,7 +94,7 @@ export function PositionHistoryChart({
             y1={PADDING.top + innerHeight}
             x2={PADDING.left + innerWidth}
             y2={PADDING.top + innerHeight}
-            stroke="#2B2419"
+            stroke="#2A2016"
             strokeWidth="1"
           />
 
@@ -130,7 +130,7 @@ export function PositionHistoryChart({
             y={minLineY - 6}
             fill="#E8A33D"
             fontSize="11"
-            fontFamily="JetBrains Mono, ui-monospace, monospace"
+            style={{ fontFamily: "var(--font-mono), ui-monospace, monospace" }}
           >
             Target {formatRatioLabel(minRatioBps)}
           </text>
@@ -139,7 +139,7 @@ export function PositionHistoryChart({
             y={liquidationLineY - 6}
             fill="#E2574C"
             fontSize="11"
-            fontFamily="JetBrains Mono, ui-monospace, monospace"
+            style={{ fontFamily: "var(--font-mono), ui-monospace, monospace" }}
           >
             Liquidation {formatRatioLabel(liquidationThresholdBps)}
           </text>
@@ -149,7 +149,7 @@ export function PositionHistoryChart({
             y={PADDING.top + innerHeight + 22}
             fill="#9C9183"
             fontSize="11"
-            fontFamily="JetBrains Mono, ui-monospace, monospace"
+            style={{ fontFamily: "var(--font-mono), ui-monospace, monospace" }}
           >
             {formatPointDate(validPoints[0].timestamp)}
           </text>
@@ -159,7 +159,7 @@ export function PositionHistoryChart({
             textAnchor="end"
             fill="#9C9183"
             fontSize="11"
-            fontFamily="JetBrains Mono, ui-monospace, monospace"
+            style={{ fontFamily: "var(--font-mono), ui-monospace, monospace" }}
           >
             {formatPointDate(validPoints[validPoints.length - 1].timestamp)}
           </text>

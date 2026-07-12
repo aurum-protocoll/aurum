@@ -3,15 +3,16 @@
 @tailwind utilities;
 
 @layer base {
-  body {
-    background-color: #0e0c08;
-    color: #f0eae0;
+  ::selection {
+    background-color: theme("colors.gold");
+    color: theme("colors.base");
   }
 }
 
-.deviation-alert {
-  color: #e2574c;
-}
-.deviation-ok {
-  color: #3ddc97;
+@media (prefers-reduced-motion: reduce) {
+  .animate-pulse-glow,
+  .animate-ping-slow,
+  .animate-pulse {
+    animation: none;
+  }
 }
