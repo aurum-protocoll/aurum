@@ -1,7 +1,6 @@
 # Rust / Soroban
 /contract/target/
 **/*.rs.bk
-Cargo.lock
 
 # Python
 __pycache__/
