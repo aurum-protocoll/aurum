@@ -14,7 +14,7 @@ import {
   getConnectedAddress,
   shortenAddress,
 } from "@/lib/freighter";
-import { useLiveTradingSession } from "@/lib/session";
+import { getTradingSession } from "@/lib/session";
 import type {
   PositionHistoryPoint,
   PositionSummary,
@@ -51,14 +51,32 @@ const SESSION_LABEL: Record<TradingSession, string> = {
 };
 
 function SessionBadge() {
-  const session = useLiveTradingSession();
+  const [now, setNow] = useState(new Date());
+
+  useEffect(() => {
+    const tick = () => setNow(new Date());
+    const id = setInterval(tick, 1000);
+    return () => clearInterval(id);
+  }, []);
+
+  const session = getTradingSession(now);
+  const timeString = now.toLocaleTimeString("en-GB", {
+    timeZone: "Africa/Lagos",
+    hour: "2-digit",
+    minute: "2-digit",
+    second: "2-digit",
+    hour12: false,
+  });
+
   return (
     <span className="flex items-center gap-2 rounded-full border border-line bg-surface px-3 py-1.5 font-mono text-[11px] uppercase tracking-wide text-ink">
       <span className="relative flex h-1.5 w-1.5">
         <span className="absolute inline-flex h-full w-full animate-ping-slow rounded-full bg-gold" />
         <span className="relative inline-flex h-1.5 w-1.5 rounded-full bg-gold" />
       </span>
-      {SESSION_LABEL[session]}
+      <span suppressHydrationWarning>
+        {SESSION_LABEL[session]} • {timeString} WAT
+      </span>
     </span>
   );
 }
