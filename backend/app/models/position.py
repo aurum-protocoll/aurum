@@ -13,3 +13,7 @@ class PositionSummary(BaseModel):
         description="None if the position has no debt (infinitely healthy) "
         "or has not yet been read from chain.",
     )
+    network: str | None = Field(
+        default="testnet",
+        description="Network the position belongs to (e.g. testnet, mainnet).",
+    )

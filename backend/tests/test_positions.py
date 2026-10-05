@@ -33,13 +33,13 @@ def test_list_positions_populated(client: TestClient):
         "address": "GBBD47IF6LWK7P7MDEVSCWR7DPUWV3NY3DTQEVFL4NAT4AQH3ZLLFLA5",
         "collateral_usd": 1500.0,
         "debt_xau": 0.5,
-        "collateral_ratio_bps": 12000,
+        "collateral_ratio_bps": 15000,
     }
     pos2 = {
-        "address": "GA5ZSEJYB37JRC5AVCIA5MOP4RHTM335X2KGX3IHOJAPP5RE34K4KZVN",
+        "address": "GCEZWKCA5VLDNRLN3RPRJMRZOX3Z6G5CHCGSNFHEYVXM3XOJMDS674JZ",
         "collateral_usd": 3000.0,
         "debt_xau": 1.0,
-        "collateral_ratio_bps": 12500,
+        "collateral_ratio_bps": 16000,
     }
 
     client.post("/positions/", json=pos1)
@@ -64,7 +64,7 @@ def test_list_positions_network_filter(client: TestClient):
         "collateral_ratio_bps": 13000,
     }
     pos_mainnet = {
-        "address": "GA5ZSEJYB37JRC5AVCIA5MOP4RHTM335X2KGX3IHOJAPP5RE34K4KZVN",
+        "address": "GCEZWKCA5VLDNRLN3RPRJMRZOX3Z6G5CHCGSNFHEYVXM3XOJMDS674JZ",
         "collateral_usd": 5000.0,
         "debt_xau": 1.5,
         "collateral_ratio_bps": 14000,
