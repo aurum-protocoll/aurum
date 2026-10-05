@@ -8,8 +8,10 @@ import {
 import { PositionCard } from "@/components/PositionCard";
 import { PositionHistoryChart } from "@/components/PositionHistoryChart";
 import { WalletConnect, type ConnectedWallet } from "@/components/WalletConnect";
+import { MintForm } from "@/components/MintForm";
+import { BurnForm } from "@/components/BurnForm";
 import { reconcilePrice } from "@/lib/api";
-import { mint, burn } from "@/lib/contract";
+import { isTestnetNetwork } from "@/lib/freighter";
 import { getTradingSession } from "@/lib/session";
 import type {
   PositionHistoryPoint,
@@ -80,12 +82,20 @@ function SessionBadge() {
 export default function Home() {
   const [wallet, setWallet] = useState<ConnectedWallet | null>(null);
 
-  const [collateralAmount, setCollateralAmount] = useState("3000");
-  const [mintAmount, setMintAmount] = useState("1");
-  const [burnAmount, setBurnAmount] = useState("1");
-  const [mintBurnLoading, setMintBurnLoading] = useState(false);
-  const [mintBurnError, setMintBurnError] = useState<string | null>(null);
-  const [mintBurnResult, setMintBurnResult] = useState<string | null>(null);
+  const [isTestnet, setIsTestnet] = useState<boolean>(true);
+
+  useEffect(() => {
+    async function checkNetwork() {
+      if (wallet && wallet.kind === "freighter") {
+        const networkInfo = await isTestnetNetwork();
+        setIsTestnet(networkInfo.isTestnet);
+      } else {
+        // Passkey is deployed on testnet by default
+        setIsTestnet(true);
+      }
+    }
+    checkNetwork();
+  }, [wallet]);
 
   const [onChainPrice, setOnChainPrice] = useState("2005");
   const [spotPrice, setSpotPrice] = useState("2000");
@@ -94,42 +104,6 @@ export default function Home() {
   const [error, setError] = useState<string | null>(null);
 
   const liveSpotPrice = parseFloat(spotPrice);
-
-  async function handleMint() {
-    if (!wallet) {
-      setMintBurnError("Connect a wallet first");
-      return;
-    }
-    setMintBurnLoading(true);
-    setMintBurnError(null);
-    setMintBurnResult(null);
-    try {
-      const result = await mint(wallet, collateralAmount, mintAmount);
-      setMintBurnResult(`Mint submitted: ${result.hash}`);
-    } catch (err) {
-      setMintBurnError(err instanceof Error ? err.message : "Mint failed");
-    } finally {
-      setMintBurnLoading(false);
-    }
-  }
-
-  async function handleBurn() {
-    if (!wallet) {
-      setMintBurnError("Connect a wallet first");
-      return;
-    }
-    setMintBurnLoading(true);
-    setMintBurnError(null);
-    setMintBurnResult(null);
-    try {
-      const result = await burn(wallet, burnAmount);
-      setMintBurnResult(`Burn submitted: ${result.hash}`);
-    } catch (err) {
-      setMintBurnError(err instanceof Error ? err.message : "Burn failed");
-    } finally {
-      setMintBurnLoading(false);
-    }
-  }
 
   async function handleReconcile() {
     setLoading(true);
@@ -227,79 +201,6 @@ export default function Home() {
         )
       )}
 
-      <section className="mb-6 space-y-4 rounded-xl border border-line bg-surface p-6">
-        <h2 className="font-display text-xs font-medium uppercase tracking-[0.2em] text-muted">
-          Mint / burn sXAU
-        </h2>
-        {!wallet && (
-          <p className="text-xs text-muted">
-            Connect a wallet above (Freighter or passkey) to mint or burn.
-          </p>
-        )}
-        <div className="grid grid-cols-2 gap-4">
-          <div>
-            <label htmlFor="collateral" className="mb-1.5 block text-xs text-muted">
-              Collateral to lock (USD)
-            </label>
-            <input
-              id="collateral"
-              value={collateralAmount}
-              onChange={(e) => setCollateralAmount(e.target.value)}
-              inputMode="decimal"
-              className="w-full rounded-md border border-line bg-base px-3 py-2.5 font-mono text-sm tabular-nums text-ink focus:border-gold focus:outline-none"
-            />
-          </div>
-          <div>
-            <label htmlFor="mintAmount" className="mb-1.5 block text-xs text-muted">
-              sXAU to mint
-            </label>
-            <input
-              id="mintAmount"
-              value={mintAmount}
-              onChange={(e) => setMintAmount(e.target.value)}
-              inputMode="decimal"
-              className="w-full rounded-md border border-line bg-base px-3 py-2.5 font-mono text-sm tabular-nums text-ink focus:border-gold focus:outline-none"
-            />
-          </div>
-        </div>
-        <button
-          onClick={handleMint}
-          disabled={mintBurnLoading || !wallet}
-          className="rounded-md bg-gold px-4 py-2.5 font-display text-sm font-semibold text-base transition-opacity hover:opacity-90 disabled:cursor-not-allowed disabled:opacity-50"
-        >
-          {mintBurnLoading ? "Submitting…" : "Mint"}
-        </button>
-
-        <div className="border-t border-line pt-4">
-          <label htmlFor="burnAmount" className="mb-1.5 block text-xs text-muted">
-            sXAU to burn
-          </label>
-          <div className="flex gap-3">
-            <input
-              id="burnAmount"
-              value={burnAmount}
-              onChange={(e) => setBurnAmount(e.target.value)}
-              inputMode="decimal"
-              className="w-full rounded-md border border-line bg-base px-3 py-2.5 font-mono text-sm tabular-nums text-ink focus:border-gold focus:outline-none"
-            />
-            <button
-              onClick={handleBurn}
-              disabled={mintBurnLoading || !wallet}
-              className="shrink-0 rounded-md border border-gold/40 px-4 py-2.5 font-display text-sm font-semibold text-gold transition-colors hover:bg-gold/10 disabled:cursor-not-allowed disabled:opacity-50"
-            >
-              {mintBurnLoading ? "Submitting…" : "Burn"}
-            </button>
-          </div>
-        </div>
-
-        {mintBurnError && (
-          <p className="font-display text-sm text-critical">{mintBurnError}</p>
-        )}
-        {mintBurnResult && (
-          <p className="font-mono text-xs text-muted">{mintBurnResult}</p>
-        )}
-      </section>
-
       <section>
         <h2 className="mb-3 font-display text-xs font-medium uppercase tracking-[0.2em] text-muted">
           Example position
@@ -310,6 +211,11 @@ export default function Home() {
           liquidationThresholdBps={LIQUIDATION_THRESHOLD_BPS}
           spotPriceUsd={liveSpotPrice > 0 ? liveSpotPrice : undefined}
         />
+      </section>
+
+      <section className="mt-6 grid grid-cols-1 md:grid-cols-2 gap-6">
+        <MintForm wallet={wallet} isTestnet={isTestnet} />
+        <BurnForm wallet={wallet} isTestnet={isTestnet} />
       </section>
 
       <section className="mt-6">
